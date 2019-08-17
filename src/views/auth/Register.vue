@@ -111,6 +111,21 @@
                           required
                         ></v-text-field>
                       </v-flex>
+
+                      <v-flex   
+                        xs12
+                        md4
+                      >
+                        <v-select
+                          v-model="customerType" 
+                          :items="dataListCustomerType" 
+                          label="User Type" 
+                          required
+                        ></v-select>  
+                         
+                      </v-flex>
+
+
                     </v-layout>
                   </v-container>
                   <v-card-actions>
@@ -127,7 +142,8 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters, mapState} from 'vuex';
+import  {store} from '../../store/store.js';
 
   export default {
     name:'Register',
@@ -175,11 +191,40 @@ import {mapActions} from 'vuex';
         v => !!v || 'Password is required',
         v => v.length <= 100 || 'Password must be less than 100 characters',
       ],
+      dataListCustomerType: [],
+      customerType: ''
 
-    }),
-    methods: {
-      ...mapActions(['register']),
+    }), 
+    created() { 
+       
+      if(this.getListOfCustomerType()){
+        this.getListOfCustomerType().forEach( (element) => {
+          this.dataListCustomerType.push(element.Name)
+        });
+      }
+      else{
+        this.listCustomerType().then(result => { 
+          result.forEach( (element) => {
+            this.dataListCustomerType.push(element.Name)
+          });
+        }) 
+      }
+          
+    },
+    computed: { 
       
+    },
+    methods: {
+      ...mapActions([
+          'register' ,
+          'listCustomerType'
+      ]),
+      ...mapGetters([
+        'getListOfCustomerType'
+      ]), 
+      testMe(){
+        alert(5)
+      },
       registerBtn() {   
         const data = {
           firstName: this.firstName,

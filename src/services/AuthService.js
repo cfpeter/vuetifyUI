@@ -14,8 +14,8 @@ export default {
     register(regData){ 
         return apiClient.post('/register', regData)
     },
-    login(lohinData){ 
-        return apiClient.post('/login', lohinData)
+    login(loginData){ 
+        return apiClient.post('/login', loginData)
     },
     logout(){ 
         return apiClient.post('/logout')

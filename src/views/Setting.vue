@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions, mapState} from 'vuex'
 
 
   export default {
@@ -114,21 +114,35 @@ import {mapGetters, mapActions} from 'vuex'
         email: null
       }
     }, 
-    computed: {
-        ...mapGetters(['userbasicData']) 
+    computed: { 
+        ...mapGetters(['userTokenInfo']), 
     },
     created(){
-        this.firstName = this.userbasicData.firstName;
-        this.lastName = this.userbasicData.lastName;
-        this.gender = this.userbasicData.Gender;
-        this.email = this.userbasicData.Email; 
+        
+        if(this.userbasicData()){ 
+            this.setUser(this.userbasicData())
+        }
+        else{ 
+            this.getUserByCustomerID(this.userTokenInfo.id).then(res => {
+                this.setUser(res.data)
+            }) 
+        }
+        
     },
     methods: { 
-        save () {
-            
+        ...mapGetters(['userbasicData']) ,
+        ...mapActions(['getUserByCustomerID']),
+
+        save () { 
             this.isEditing = !this.isEditing
             this.hasSaved = true
         },
+        setUser (data){
+            this.firstName = data.firstName;
+            this.lastName = data.lastName;
+            this.gender = data.Gender;
+            this.email = data.Email;  
+        } 
     },
   }
 </script>

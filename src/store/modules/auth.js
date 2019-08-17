@@ -72,6 +72,7 @@ export const getters = {
         return state.token != null;
     },
     userTokenInfo: state => { 
-        return jwt.verify(state.token, 'wellThisShouldBeStrongKeyForToken');
+        if(state.token)
+            return jwt.verify(state.token, 'wellThisShouldBeStrongKeyForToken');
     }
 }//end of getters 

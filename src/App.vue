@@ -23,17 +23,15 @@ export default {
     return :{
       
     }
-    //
-  }), 
-  
-    created(){
-        this.getUserByCustomerID(8);
-    },
+  }),   
+  created(){
+    // this.getUserByCustomerID(8);
+  },
   computed: {
       ...mapGetters(['loggedIn'])
   },
   methods: { 
-      ...mapActions(['getUserByCustomerID'])
+      // ...mapActions(['getUserByCustomerID'])
   }
 };
 </script>
