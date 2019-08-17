@@ -49,13 +49,14 @@
                 value=' '
             ></v-text-field> 
 
-            <v-text-field
-                :disabled="!isEditing"
-                color="white"
-                label="Gender"
+            <v-select
                 v-model="gender"
-                :item='genderList'
-            ></v-text-field> 
+                item-value="genderList.value" 
+                :items="genderList" 
+                label="Gender" 
+                data-vv-name="Gender"
+                required
+            ></v-select>
           
             <v-text-field
                 :disabled="!isEditing"
@@ -105,11 +106,7 @@ import {mapGetters, mapActions, mapState} from 'vuex'
         model: null, 
         firstName: null,
         lastName: null,
-        genderList: [
-            'Male',
-            'Female',
-            'Other'
-        ],
+        genderList: [ 'Male', 'Female', 'Other'], 
         gender: null,
         email: null
       }
@@ -117,8 +114,7 @@ import {mapGetters, mapActions, mapState} from 'vuex'
     computed: { 
         ...mapGetters(['userTokenInfo']), 
     },
-    created(){
-        
+    created(){ 
         if(this.userbasicData()){ 
             this.setUser(this.userbasicData())
         }
@@ -127,7 +123,6 @@ import {mapGetters, mapActions, mapState} from 'vuex'
                 this.setUser(res.data)
             }) 
         }
-        
     },
     methods: { 
         ...mapGetters(['userbasicData']) ,

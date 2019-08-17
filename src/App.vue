@@ -1,10 +1,11 @@
 <template>
   <v-app>  
-    <v-content>    
       <SideNav v-if="loggedIn"/> 
       <Header />
-      <router-view></router-view>  
-    </v-content>
+    <v-container fluid> 
+      <!-- If using vue-router -->
+      <router-view></router-view>
+    </v-container>
   </v-app>
 </template>
 

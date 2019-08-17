@@ -1,8 +1,12 @@
 <template>
-  <v-card>
     <v-navigation-drawer
       expand-on-hover  
-      app 
+      app
+      permanent 
+      clipped
+      floating
+      mobile-break-point
+      fixed
     >
       <template  >
         <v-list>
@@ -56,8 +60,6 @@
 
       </v-list> 
     </v-navigation-drawer> 
-  </v-card>
-   
 </template>
 
 

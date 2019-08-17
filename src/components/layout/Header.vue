@@ -1,5 +1,7 @@
 <template>
-    <v-app-bar  
+    <v-app-bar 
+    app  
+    clipped-left
     >
       <v-toolbar-title class="headline text-uppercase">
         <span>Team</span>

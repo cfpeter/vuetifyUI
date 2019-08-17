@@ -162,20 +162,7 @@ import  {store} from '../../store/store.js';
         v => v.length <= 100 || 'Last Name must be less than 100 characters',
       ],
       gender: '',
-      genderList: [
-        { 
-          text:'Male', 
-          value:'Male' 
-        }, 
-        { 
-          text:'Female', 
-          value:'Female' 
-        }, 
-        { 
-          text:'Other', 
-          value:'Other' 
-        }, 
-      ], 
+      genderList: [ 'Male', 'Female', 'Other'], 
       email: '', 
       emailRules: [
         v => !!v || 'E-mail is required',
