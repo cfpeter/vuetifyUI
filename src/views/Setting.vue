@@ -1,5 +1,4 @@
 <template>
-
     <v-content  >  
       <v-container  > 
         <v-flex
@@ -37,7 +36,7 @@
                 :disabled="!isEditing"
                 color="white"
                 label="First Name"
-                v-model="firstName"
+                v-model="formData.firstName"
                 value="userbasicData.firstName"
             ></v-text-field> 
             
@@ -45,12 +44,37 @@
                 :disabled="!isEditing"
                 color="white"
                 label="Last Name"
-                v-model="lastName"
+                v-model="formData.lastName"
                 value=' '
-            ></v-text-field> 
+            ></v-text-field>  
+
+            <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+            >
+                <template v-slot:activator="{ on }">
+                    <v-text-field
+                        v-model="formData.dob"
+                        label="Date Of Birth" 
+                        readonly
+                        v-on="on"
+                    ></v-text-field>
+                </template>
+                <v-date-picker
+                    ref="picker"
+                    v-model="formData.dob"
+                    :max="new Date().toISOString().substr(0, 10)"
+                    min="1950-01-01" 
+                ></v-date-picker>
+            </v-menu>
 
             <v-select
-                v-model="gender"
+                v-model="formData.gender"
                 item-value="genderList.value" 
                 :items="genderList" 
                 label="Gender" 
@@ -62,7 +86,23 @@
                 :disabled="!isEditing"
                 color="white"
                 label="Email"
-                v-model="email"
+                v-model="formData.email"
+            ></v-text-field> 
+
+            <v-text-field
+                :disabled="!isEditing"
+                color="white"
+                label="Cell Phone"
+                v-model="formData.cellPhone"
+                type="tel" 
+            ></v-text-field> 
+
+            <v-text-field
+                :disabled="!isEditing"
+                color="white"
+                label="Other Phone"
+                v-model="formData.otherPhone"
+                type="tel"
             ></v-text-field> 
  
 
@@ -104,39 +144,53 @@ import {mapGetters, mapActions, mapState} from 'vuex'
         hasSaved: false,
         isEditing: true,
         model: null, 
-        firstName: null,
-        lastName: null,
+        formData: {
+            firstName: null,
+            lastName: null,
+            dob: null,
+            gender: null,
+            email: null,
+            cellPhone: null,
+            otherPhone: null
+
+        },
         genderList: [ 'Male', 'Female', 'Other'], 
-        gender: null,
-        email: null
+        date: null,
+        menu: false,
       }
     }, 
     computed: { 
-        ...mapGetters(['userTokenInfo']), 
     },
     created(){ 
-        if(this.userbasicData()){ 
-            this.setUser(this.userbasicData())
-        }
-        else{ 
-            this.getUserByCustomerID(this.userTokenInfo.id).then(res => {
-                this.setUser(res.data)
-            }) 
-        }
+        this.setUser(this.userbasicData())
+    },
+    watch: {
+      menu (val) {
+        val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+      },
     },
     methods: { 
         ...mapGetters(['userbasicData']) ,
-        ...mapActions(['getUserByCustomerID']),
+        ...mapActions(['updatePerson']),
 
-        save () { 
-            this.isEditing = !this.isEditing
-            this.hasSaved = true
+        save () {  
+            this.formData.PersonID = this.userbasicData().PersonID
+            this.formData.CustomerID = this.userbasicData().CustomerID
+            this.updatePerson(this.formData)
+            .then(result => {  
+                this.isEditing = !this.isEditing
+                this.hasSaved = true
+            })
         },
+        
         setUser (data){
-            this.firstName = data.firstName;
-            this.lastName = data.lastName;
-            this.gender = data.Gender;
-            this.email = data.Email;  
+            this.formData.firstName = data.firstName;
+            this.formData.lastName = data.lastName;
+            this.formData.gender = data.Gender;
+            this.formData.email = data.Email;  
+            this.formData.dob = data.DOB;  
+            this.formData.cellPhone = data.CellPhone;
+            this.formData.otherPhone = data.OtherPhone;            
         } 
     },
   }

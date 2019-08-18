@@ -19,7 +19,7 @@
                   {{errorMessage}}
               </v-alert>
                 
-                <v-form> 
+                <v-form > 
                      
                       <v-flex>
                         <v-text-field  
@@ -40,6 +40,7 @@
                           :counter="100"
                           label="Password"
                           type="password"
+                          v-on:keyup.enter="LoginBtn"
                           required
                         ></v-text-field>
                       </v-flex> 

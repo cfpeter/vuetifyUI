@@ -1,5 +1,5 @@
 // import jwt from 'jsonwebtoken' 
-import CustomerService from '../../services/CustomerService';
+import PersonService from '../../services/PersonService';
 
 export const state = {
     listOfCustomerType : null
@@ -7,7 +7,7 @@ export const state = {
 }//end of state
 
 export const mutations = {
-
+ 
     setCustomerType: (state, ctype) =>{
         state.listOfCustomerType = ctype;
     } 
@@ -16,9 +16,9 @@ export const mutations = {
 
 export const actions = {
      
-    async listCustomerType ( { commit }){  
+    async updatePerson ( { commit }, payload){  
         try {
-            const res = await CustomerService.listCustomerType(); 
+            const res = await PersonService.updatePerson(payload); 
             commit('setCustomerType', res.data.recordset);
             return res.data.recordset 
         }

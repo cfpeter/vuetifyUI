@@ -7,28 +7,28 @@ export const state = {
 
 export const mutations = {
     setToken: (state, token) =>{
-        state.token = token;
+        state.token = token; 
+        localStorage.setItem('access_token' , token); 
     },
-    logout: (state) => {
-        state.token = null
+    logout: () => { 
+        localStorage.removeItem('access_token'); 
+        location.reload()
     },
 
 }//end of mutations 
 
 export const actions = {
 
-    async logout(context) {
-        if(context.getters.loggedIn){
+    async logout({commit, getters}) {
+        if(getters.loggedIn){
             return new Promise( async (resolve, reject) => {
                 AuthService.logout()
                 .then(res => {   
-                    localStorage.removeItem('access_token'); 
                     resolve(res) 
-                    context.commit('logout');
+                    commit('logout');
     
-                }).catch(err => {  
-                    localStorage.removeItem('access_token'); 
-                    context.commit('logout');
+                }).catch(err => {   
+                    commit('logout');
                     reject(err)
                 })
             })
@@ -39,8 +39,7 @@ export const actions = {
         return new Promise((resolve, reject) => { 
             AuthService.register(formData)
             .then( res => {   
-                const token = res.data;
-                localStorage.setItem('access_token' , token);
+                const token = res.data; 
                 commit('setToken' , token);
                 resolve(token);
             }).catch(err => {  
@@ -52,12 +51,13 @@ export const actions = {
     
   login( {commit} , loginData ){
     return new Promise((resolve, reject) => { 
-        AuthService.login(loginData).then(res => {   
+        AuthService.login(loginData)
+        .then(res => {   
             const token = res.data;
-            localStorage.setItem('access_token' , token); 
             commit('setToken' , token);  
             resolve(token)
-        }).catch(err => { 
+        })
+        .catch(err => { 
             reject(err);
         })
     }) 

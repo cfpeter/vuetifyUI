@@ -51,7 +51,7 @@
           <v-list-item-title>Shared with me</v-list-item-title>
         </v-list-item>
 
-        <v-list-item link to="/setting">
+        <v-list-item link :to="{ name: 'setting', params: { id: this.userTokenInfo.id }}">
           <v-list-item-icon>
             <v-icon>mdi-settings</v-icon>
           </v-list-item-icon>

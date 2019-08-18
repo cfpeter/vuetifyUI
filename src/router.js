@@ -5,11 +5,13 @@ import Login from './views/auth/Login.vue'
 import Logout from './views/auth/Logout.vue'
 import Dashboard from './views/Dashboard.vue';
 import Setting from './views/Setting.vue';
+import NProgress from 'nprogress'
+import store from './store/store' 
 
 
 Vue.use(Router);
 
-export default new Router({
+const router =  new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [ 
@@ -22,7 +24,12 @@ export default new Router({
       path: '/register' , 
       name: 'register',
       component: Register , 
-      meta: { requiresVisitor: true }
+      meta: { requiresVisitor: true },
+      beforeEnter(routeTo , routeFrom, next) { 
+        store.dispatch('listCustomerType').then(() =>{   
+          next()
+        }) 
+      }
     },
     {
       path: '/login' , 
@@ -33,8 +40,13 @@ export default new Router({
     {
       path: '/logout' , 
       name: 'logout',
-      component: Logout , 
-      // meta: { requiresVisitor: true }
+      component: Logout ,
+      meta: { requiresAuth: true },
+      beforeEnter(routeTo , routeFrom, next) { 
+        store.dispatch('logout').then(() =>{  
+          next()
+        }) 
+      }
     },
     
     {
@@ -47,7 +59,23 @@ export default new Router({
       path: '/setting' , 
       name: 'setting',
       component: Setting ,  
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
+      beforeEnter(routeTo , routeFrom, next) { 
+        store.dispatch('getUserByCustomerID', store.getters.userTokenInfo.id ).then(() =>{  
+          next()
+        }) 
+      }
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next()
+})
+
+router.afterEach(() => {
+  NProgress.done()
+})
+
+export default router

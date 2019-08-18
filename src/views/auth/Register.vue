@@ -182,36 +182,23 @@ import  {store} from '../../store/store.js';
       customerType: ''
 
     }), 
-    created() { 
-       
-      if(this.getListOfCustomerType()){
-        this.getListOfCustomerType().forEach( (element) => {
-          this.dataListCustomerType.push(element.Name)
-        });
-      }
-      else{
-        this.listCustomerType().then(result => { 
-          result.forEach( (element) => {
-            this.dataListCustomerType.push(element.Name)
-          });
-        }) 
-      }
-          
+    created() {  
+      //push the customer type to select input
+      this.getListOfCustomerType().forEach( (element) => {
+        this.dataListCustomerType.push(element.Name)
+      });
+      
     },
     computed: { 
       
     },
     methods: {
       ...mapActions([
-          'register' ,
-          'listCustomerType'
+          'register' , 
       ]),
       ...mapGetters([
         'getListOfCustomerType'
-      ]), 
-      testMe(){
-        alert(5)
-      },
+      ]),  
       registerBtn() {   
         const data = {
           firstName: this.firstName,
@@ -219,7 +206,8 @@ import  {store} from '../../store/store.js';
           gender: this.gender,
           email: this.email,
           userName: this.userName,
-          passCode: this.passWord
+          passCode: this.passWord,
+          customerTypeName: this.customerType
         }
         this.register(data)
         .then( token => { 
