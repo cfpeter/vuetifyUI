@@ -37,23 +37,12 @@
                         md4
                       >
                         <v-text-field
-                          v-model="firstName"
-                          :rules="firstNameRules"
-                          :counter="100"
+                          v-model="firstName" 
                           label="First Name"
-                          required
-                        ></v-text-field>
-                      </v-flex>
-
-                      <v-flex
-                        xs12
-                        md4
-                      >
-                        <v-text-field
-                          v-model="lastName"
-                          :rules="lastNameRules"
                           :counter="100"
-                          label="Last Name"
+                          v-validate="'required|max:100'" 
+                          :error-messages="errors.collect('firstName')" 
+                          data-vv-name="firstName" 
                           required
                         ></v-text-field>
                       </v-flex>
@@ -63,9 +52,27 @@
                         md4
                       >
                         <v-text-field
-                          v-model="email"
-                          :rules="emailRules"
+                          v-model="lastName" 
+                          :counter="100"
+                          label="Last Name" 
+                          v-validate="'required|max:100'" 
+                          :error-messages="errors.collect('lastName')" 
+                          data-vv-name="lastName" 
+                          required
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex
+                        xs12
+                        md4
+                      >
+                        <v-text-field
+                          v-model="email" 
                           label="E-mail"
+                          v-validate="'required|max:100'" 
+                          :error-messages="errors.collect('email')" 
+                          data-vv-name="email"
+                          :counter="100"
                           required
                         ></v-text-field>
                       </v-flex>
@@ -77,11 +84,13 @@
                         md4
                       >
                         <v-select
-                          v-model="gender"
-                          item-value="genderList.value" 
+                          v-model="gender" 
                           :items="genderList" 
                           label="Gender" 
-                          data-vv-name="Gender"
+                          data-vv-name="gender"
+                          v-validate="'required'" 
+                          :error-messages="errors.collect('gender')"  
+                          :counter="100"
                           required
                         ></v-select>
 
@@ -92,10 +101,12 @@
                         md4
                       >
                         <v-text-field
-                          v-model="userName"
-                          :rules="userNameRules"
+                          v-model="userName" 
                           :counter="100"
                           label="User Name"
+                          v-validate="'required|max:100'" 
+                          :error-messages="errors.collect('userName')" 
+                          data-vv-name="userName"
                           required
                         ></v-text-field>
                       </v-flex>
@@ -105,10 +116,13 @@
                         md4
                       >
                         <v-text-field
-                          v-model="passWord"
-                          :rules="passWordRules"
+                          v-model="password" 
                           label="Password"
-                          required
+                          :counter="100"
+                          v-validate="'required|max:100'" 
+                          :error-messages="errors.collect('password')" 
+                          data-vv-name="password"
+                          required 
                         ></v-text-field>
                       </v-flex>
 
@@ -120,9 +134,11 @@
                           v-model="customerType" 
                           :items="dataListCustomerType" 
                           label="User Type" 
+                          v-validate="'required'" 
+                          :error-messages="errors.collect('customerType')" 
+                          data-vv-name="customerType"
                           required
-                        ></v-select>  
-                         
+                        ></v-select>   
                       </v-flex>
 
 
@@ -146,40 +162,57 @@ import {mapActions, mapGetters, mapState} from 'vuex';
 import  {store} from '../../store/store.js';
 
   export default {
+    $_veeValidate: {
+      validator: 'new',
+    },
     name:'Register',
     data: () => ({
       errorShow: false,
       errorMessage: '',
       valid: false,
-      firstName: '',
-      firstNameRules: [
-        v => !!v || 'First Name is required',
-        v => v.length <= 100 || 'First Name must be less than 100 characters',
-      ],
-      lastName: '',
-      lastNameRules: [
-        v => !!v || 'Last Name is required',
-        v => v.length <= 100 || 'Last Name must be less than 100 characters',
-      ],
+      firstName: '', 
+      lastName: '', 
       gender: '',
       genderList: [ 'Male', 'Female', 'Other'], 
-      email: '', 
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid',
-      ],
-      userName: '',
-      userNameRules: [
-        v => !!v || 'User Name is required',
-        v => v.length <= 100 || 'User Name must be less than 100 characters',
-      ],
-      passWord: '',
-      passWordRules: [
-        v => !!v || 'Password is required',
-        v => v.length <= 100 || 'Password must be less than 100 characters',
-      ],
+      email: '',  
+      userName: '', 
+      password: '', 
       dataListCustomerType: [],
-      customerType: ''
+      customerType: '',
+
+      dictionary: {
+        custom: {
+          firstName: {
+            required: () => 'First Name can not be empty',
+            max: 'The First Name field may not be greater than 100 characters'
+          },
+          lastName: {
+            required: () => 'Last Name can not be empty',
+            max: 'The Last Name field may not be greater than 100 characters'
+          },
+          email: {
+            required: () => 'email can not be empty',
+            max: 'The email field may not be greater than 100 characters'
+          },
+          gender: {
+            required: () => 'gender can not be empty'
+          },
+          userName: {
+            required: () => 'userName can not be empty',
+            max: 'The userName field may not be greater than 100 characters'
+          },
+          password: {
+            required: () => 'Password can not be empty',
+            max: 'The Password field may not be greater than 100 characters'
+          },
+          customerType: {
+            required: () => 'Ypu must select a customer typr.'
+          }
+           
+        
+        
+        },
+      },
 
     }), 
     created() {  
@@ -189,8 +222,8 @@ import  {store} from '../../store/store.js';
       });
       
     },
-    computed: { 
-      
+    mounted () {
+      this.$validator.localize('en', this.dictionary)
     },
     methods: {
       ...mapActions([
@@ -199,24 +232,28 @@ import  {store} from '../../store/store.js';
       ...mapGetters([
         'getListOfCustomerType'
       ]),  
-      registerBtn() {   
-        const data = {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          gender: this.gender,
-          email: this.email,
-          userName: this.userName,
-          passCode: this.passWord,
-          customerTypeName: this.customerType
+      async registerBtn() {   
+
+        const isValid = await this.$validator.validateAll();
+        if(isValid){ 
+          const data = {
+            firstName:        this.firstName,
+            lastName:         this.lastName,
+            gender:           this.gender,
+            email:            this.email,
+            userName:         this.userName,
+            password:         this.password,
+            customerTypeName: this.customerType
+          }
+          this.register(data)
+          .then( token => { 
+             this.$router.push('dashboard')
+          })
+          .catch(err => {
+            this.errorShow = true;
+            this.errorMessage = err.response.data
+          })
         }
-        this.register(data)
-        .then( token => { 
-           this.$router.push('dashboard')
-        })
-        .catch(err => {
-          this.errorShow = true;
-          this.errorMessage = err.response.data
-        })
       }
     }
   }

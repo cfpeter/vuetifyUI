@@ -4,7 +4,11 @@ import router from "./router";
 import store from "./store/store";
 import vuetify from './plugins/vuetify';
 import 'nprogress/nprogress.css' 
+import VeeValidate from 'vee-validate'
 
+Vue.use(VeeValidate)
+
+ 
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {

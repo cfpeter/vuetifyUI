@@ -19,29 +19,32 @@
                   {{errorMessage}}
               </v-alert>
                 
-                <v-form > 
-                     
+                <v-form ref="form">  
                       <v-flex>
                         <v-text-field  
-                          v-model="userName"
-                          :rules="userNameRules"
-                          :counter="100"
+                          v-model="userName" 
                           label="User Name"
+                          v-validate="'required|max:100'"
+                          :counter="100"
+                          :error-messages="errors.collect('userName')" 
+                          data-vv-name="userName"
                           required
-                        ></v-text-field>
+                        ></v-text-field> 
                       </v-flex>
 
                       <v-spacer></v-spacer>
 
-                      <v-flex  >
+                      <v-flex >
                         <v-text-field
-                          v-model="passWord"
-                          :rules="passWordRules"
-                          :counter="100"
-                          label="Password"
+                          v-model="password"  
+                          label="password"
                           type="password"
-                          v-on:keyup.enter="LoginBtn"
                           required
+                          v-validate="'required|max:100'"
+                          :counter="100"
+                          :error-messages="errors.collect('password')" 
+                          data-vv-name="password"
+                          v-on:keyup.enter="LoginBtn"
                         ></v-text-field>
                       </v-flex> 
 
@@ -62,39 +65,58 @@
 import {mapActions} from 'vuex';
 
   export default {
+    $_veeValidate: {
+      validator: 'new',
+    },
     name:'Login',
     data: () => ({
       errorShow: false,
       errorMessage: '',
       valid: false, 
-      userName: '',
-      userNameRules: [
-        v => !!v || 'User Name is required',
-        v => v.length <= 100 || 'User Name must be less than 100 characters',
-      ],
-      passWord: '',
-      passWordRules: [
-        v => !!v || 'Password is required',
-        v => v.length <= 100 || 'Password must be less than 100 characters',
-      ],
+      userName: '', 
+      password: '',
+      dictionary: {
+        custom: {
+          userName: {
+            required: () => 'User Name can not be empty',
+            max: 'The User Name field may not be greater than 100 characters'
+          },
+          password: {
+            required: () => 'Password can not be empty',
+            max: 'The Password field may not be greater than 100 characters'
+          },
+        },
+      },
 
     }),
+    mounted () {
+      this.$validator.localize('en', this.dictionary)
+    },
+
     methods: {
       ...mapActions(['login']),
-      LoginBtn() {
-        const data ={
-          userName: this.userName,
-          passWord: this.passWord
-        }
 
-         this.login(data)
-        .then( () => { 
-           this.$router.push('dashboard')
-        })
-        .catch(err => {
-          this.errorShow = true;
-          this.errorMessage = err.response.data
-        })
+
+      async LoginBtn() {
+
+        const isValid = await this.$validator.validateAll()
+
+        if(isValid){ 
+          
+          const data ={
+            userName: this.userName,
+            password: this.password
+          }
+  
+          this.login(data)
+            .then( () => { 
+             this.$router.push('dashboard')
+            })
+            .catch(err => {
+              this.errorShow = true;
+              this.errorMessage = err.response.data
+            })
+        } 
       }
      
        

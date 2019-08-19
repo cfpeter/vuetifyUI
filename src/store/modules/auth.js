@@ -21,25 +21,21 @@ export const actions = {
 
     async logout({commit, getters}) {
         if(getters.loggedIn){
-            return new Promise( async (resolve, reject) => {
-                AuthService.logout()
-                .then(res => {   
-                    resolve(res) 
-                    commit('logout');
-    
-                }).catch(err => {   
-                    commit('logout');
-                    reject(err)
+            return await AuthService.logout()
+                .then(() => {    
+                    commit('logout'); 
                 })
-            })
-        } 
+                .catch(() => {   
+                    commit('logout'); 
+                }) 
+        }
     },
      
     register ({commit}, formData){  
         return new Promise((resolve, reject) => { 
             AuthService.register(formData)
             .then( res => {   
-                const token = res.data; 
+                const token = res.data;  
                 commit('setToken' , token);
                 resolve(token);
             }).catch(err => {  

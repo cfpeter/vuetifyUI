@@ -11,6 +11,7 @@ import store from './store/store'
 
 Vue.use(Router);
 
+
 const router =  new Router({
   mode: "history",
   base: process.env.BASE_URL,
@@ -44,7 +45,7 @@ const router =  new Router({
       meta: { requiresAuth: true },
       beforeEnter(routeTo , routeFrom, next) { 
         store.dispatch('logout').then(() =>{  
-          next()
+          next('/login')
         }) 
       }
     },
@@ -60,8 +61,8 @@ const router =  new Router({
       name: 'setting',
       component: Setting ,  
       meta: { requiresAuth: true },
-      beforeEnter(routeTo , routeFrom, next) { 
-        store.dispatch('getUserByCustomerID', store.getters.userTokenInfo.id ).then(() =>{  
+      beforeEnter(routeTo , routeFrom, next) {  
+        store.dispatch('getUserByCustomerID', store.getters.userTokenInfo.customerID ).then(() =>{  
           next()
         }) 
       }

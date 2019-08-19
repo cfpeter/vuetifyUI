@@ -21,8 +21,8 @@
             two-line
           >
             <v-list-item-content>
-              <v-list-item-title class="title"> {{userTokenInfo.name}}</v-list-item-title>
-              <v-list-item-subtitle> {{userTokenInfo.name}}@gmail.com</v-list-item-subtitle>
+              <v-list-item-title class="title"> {{userTokenInfo.fullName}}</v-list-item-title>
+              <v-list-item-subtitle> {{userTokenInfo.fullName}}@gmail.com</v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
               <v-icon>mdi-menu-down</v-icon>
@@ -51,7 +51,7 @@
           <v-list-item-title>Shared with me</v-list-item-title>
         </v-list-item>
 
-        <v-list-item link :to="{ name: 'setting', params: { id: this.userTokenInfo.id }}">
+        <v-list-item link :to="{ name: 'setting'}">
           <v-list-item-icon>
             <v-icon>mdi-settings</v-icon>
           </v-list-item-icon>

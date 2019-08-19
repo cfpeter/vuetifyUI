@@ -1,7 +1,7 @@
 <template>
     <v-content >  
       <v-container>
-        <h2>THis is your dashboard {{userTokenInfo.name}}</h2> 
+        <h2>THis is your dashboard {{userTokenInfo.fullName}}</h2> 
       </v-container>
     </v-content>
 </template>
@@ -16,8 +16,8 @@ export default {
         SideNav
     }, 
     created(){
-        if(!this.userTokenInfo.id)
-            this.getUserByCustomerID(this.userTokenInfo.id);
+        if(!this.userTokenInfo.customerID)
+            this.getUserByCustomerID(this.userTokenInfo.customerID);
     },
     computed: {
         ...mapGetters(['userTokenInfo']), 
