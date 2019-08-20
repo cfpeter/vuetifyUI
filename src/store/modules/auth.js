@@ -32,8 +32,8 @@ export const actions = {
     },
      
     register ({commit}, formData){  
-        return new Promise((resolve, reject) => { 
-            AuthService.register(formData)
+        return new Promise(async (resolve, reject) => { 
+            await AuthService.register(formData)
             .then( res => {   
                 const token = res.data;  
                 commit('setToken' , token);
@@ -45,18 +45,25 @@ export const actions = {
     },
 
     
-  login( {commit} , loginData ){
-    return new Promise((resolve, reject) => { 
-        AuthService.login(loginData)
-        .then(res => {   
-            const token = res.data;
-            commit('setToken' , token);  
-            resolve(token)
-        })
-        .catch(err => { 
-            reject(err);
-        })
-    }) 
+    async login( {commit, getters, dispatch } , loginData ){
+        try {
+            const result = await AuthService.login(loginData)
+            commit('setToken' , result.data);   
+
+            //get person/user info nad commit/call action and action will commit
+            await dispatch(
+                'getUserByCustomerID',  
+                getters.userTokenInfo.customerID , 
+                {
+                    root:true
+                }
+            ) 
+            return result.data;
+            
+        } catch (error) {
+            throw error
+        } 
+    
   },
 
 

@@ -7,7 +7,7 @@ export const state = {
 
 export const mutations = {
     
-    userBasicData: (state, data) => {
+    setPersonData: (state, data) => {
         state.userData = data;
     }
 }
@@ -18,7 +18,7 @@ export const actions = {
         try {
             const response = await PersonService.updatePerson(payload); 
             // console.log(res)
-            commit('userBasicData' , response.data.recordset[0]) 
+            commit('setPersonData' , response.data.recordset[0]) 
             return response.data.recordset[0];
         }
         catch (err) {
@@ -27,23 +27,21 @@ export const actions = {
          
     },
 
-    getUserByCustomerID({ commit } , id){
-        
-        return new Promise((resolve, reject) => {
-            UserService.getUserByCustomerID(id)
-            .then((response) => {
-                resolve(response)  
-                commit('userBasicData' , response.data)
-            })
-            .catch((e) =>{
-                reject(e)
-            })
-        })
+    async getUserByCustomerID({ commit } , id){ 
+        try { 
+            const response = await UserService.getUserByCustomerID(id);
+            commit('setPersonData' , response.data) 
+            return response.data;
+        } catch (error) {
+            throw error
+        }   
     }
 }
 
 export const getters = {
-    userbasicData: state => {
-        return state.userData; 
+
+    getPersonData: state => { 
+        // if(state.userData)
+            return state.userData; 
     }
 }

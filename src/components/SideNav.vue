@@ -21,8 +21,11 @@
             two-line
           >
             <v-list-item-content>
-              <v-list-item-title class="title"> {{userTokenInfo.fullName}}</v-list-item-title>
-              <v-list-item-subtitle> {{userTokenInfo.fullName}}@gmail.com</v-list-item-subtitle>
+              <v-list-item-title class="title"> 
+               {{ personData.firstName }} 
+               {{ personData.lastName }}
+              </v-list-item-title>
+              <v-list-item-subtitle> {{personData.email}}</v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
               <v-icon>mdi-menu-down</v-icon>
@@ -69,6 +72,9 @@ import {mapGetters} from 'vuex'
   export default {
     data () {
       return {
+        firstName: '',
+        lastName: '',
+        email: '',
         drawer: true,
         items: [
           { title: 'Home', icon: 'mdi-home-city' },
@@ -78,9 +84,15 @@ import {mapGetters} from 'vuex'
         mini: true,
       }
     },
-    
     computed: {
-        ...mapGetters(['userTokenInfo'])
-    }
+        
+        personData(){
+          if(this.$store.getters.getPersonData)
+            return this.$store.getters.getPersonData 
+          
+          return '';
+        }
+        
+    }, 
   }
 </script>

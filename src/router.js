@@ -18,7 +18,7 @@ const router =  new Router({
   routes: [ 
     {
       path: '/' ,  
-      component: Dashboard , 
+      redirect: 'dashboard', 
       meta: { requiresAuth: true }
     },
     {
@@ -26,8 +26,8 @@ const router =  new Router({
       name: 'register',
       component: Register , 
       meta: { requiresVisitor: true },
-      beforeEnter(routeTo , routeFrom, next) { 
-        store.dispatch('listCustomerType').then(() =>{   
+      async beforeEnter(routeTo , routeFrom, next) { 
+        await store.dispatch('listCustomerType').then(() =>{   
           next()
         }) 
       }
@@ -54,17 +54,30 @@ const router =  new Router({
       path: '/dashboard' , 
       name: 'dashboard',
       component: Dashboard , 
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
+      async beforeEnter( routeTo , routeFrom, next) { 
+        if(!store.getters.getPersonData) { 
+          await store.dispatch('getUserByCustomerID', store.getters.userTokenInfo.customerID ).then(() =>{  
+            next()
+          }) 
+        } else{
+          next()
+        }
+      }
     },
     {
       path: '/setting' , 
       name: 'setting',
       component: Setting ,  
       meta: { requiresAuth: true },
-      beforeEnter(routeTo , routeFrom, next) {  
-        store.dispatch('getUserByCustomerID', store.getters.userTokenInfo.customerID ).then(() =>{  
+      beforeEnter(routeTo , routeFrom, next) { 
+        if(!store.getters.getPersonData) { 
+          store.dispatch('getUserByCustomerID', store.getters.userTokenInfo.customerID ).then(() =>{  
+            next()
+          }) 
+        } else{
           next()
-        }) 
+        }
       }
     }
   ]

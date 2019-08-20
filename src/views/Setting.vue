@@ -228,7 +228,8 @@ import {mapGetters, mapActions, mapState} from 'vuex'
       this.$validator.localize('en', this.dictionary)
     }, 
     created(){ 
-        this.setUser(this.userbasicData())
+        // alert(this.getPersonData.customerID)
+        this.setUser(this.getPersonData())
     },
     watch: {
       menu (val) {
@@ -236,15 +237,15 @@ import {mapGetters, mapActions, mapState} from 'vuex'
       },
     },
     methods: { 
-        ...mapGetters(['userbasicData']) ,
+        ...mapGetters(['getPersonData']) ,
         ...mapActions(['updatePerson']),
 
         async save () {  
             const isValid = await this.$validator.validateAll()
             if(isValid){
 
-                this.formData.PersonID = this.userbasicData().PersonID
-                this.formData.CustomerID = this.userbasicData().CustomerID
+                this.formData.PersonID = this.getPersonData().PersonID
+                this.formData.CustomerID = this.getPersonData().CustomerID
                 this.updatePerson(this.formData)
                 .then(result => {  
                     this.isEditing = !this.isEditing

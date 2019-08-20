@@ -2,10 +2,9 @@
   <v-app>  
       <SideNav v-if="loggedIn"/> 
       <Header />
-    <v-container fluid> 
-      <!-- If using vue-router -->
-      <router-view></router-view>
-    </v-container>
+      <v-container fluid>  
+          <router-view></router-view>
+      </v-container>
   </v-app>
 </template>
 
@@ -24,15 +23,9 @@ export default {
     return :{
       
     }
-  }),   
-  created(){
-    // this.getUserByCustomerID(8);
-  },
+  }),    
   computed: {
       ...mapGetters(['loggedIn'])
-  },
-  methods: { 
-      // ...mapActions(['getUserByCustomerID'])
-  }
+  }, 
 };
 </script>

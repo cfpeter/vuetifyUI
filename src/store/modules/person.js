@@ -18,8 +18,10 @@ export const actions = {
      
     async updatePerson ( { commit }, payload){  
         try {
+            alert(6)
             const res = await PersonService.updatePerson(payload); 
-            commit('setCustomerType', res.data.recordset);
+            console.log(res)
+            // commit('setCustomerType', res.data.recordset);
             return res.data.recordset 
         }
         catch (err) {

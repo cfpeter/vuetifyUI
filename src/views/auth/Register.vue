@@ -53,8 +53,8 @@
                       >
                         <v-text-field
                           v-model="lastName" 
-                          :counter="100"
                           label="Last Name" 
+                          :counter="100"
                           v-validate="'required|max:100'" 
                           :error-messages="errors.collect('lastName')" 
                           data-vv-name="lastName" 
@@ -102,8 +102,8 @@
                       >
                         <v-text-field
                           v-model="userName" 
-                          :counter="100"
                           label="User Name"
+                          :counter="100"
                           v-validate="'required|max:100'" 
                           :error-messages="errors.collect('userName')" 
                           data-vv-name="userName"
@@ -118,6 +118,7 @@
                         <v-text-field
                           v-model="password" 
                           label="Password"
+                          type="password"
                           :counter="100"
                           v-validate="'required|max:100'" 
                           :error-messages="errors.collect('password')" 
@@ -191,26 +192,24 @@ import  {store} from '../../store/store.js';
             max: 'The Last Name field may not be greater than 100 characters'
           },
           email: {
-            required: () => 'email can not be empty',
-            max: 'The email field may not be greater than 100 characters'
+            required: () => 'Email can not be empty',
+            max: 'The Email field may not be greater than 100 characters'
           },
           gender: {
-            required: () => 'gender can not be empty'
+            required: () => 'You must select a Gender.'
           },
           userName: {
             required: () => 'userName can not be empty',
-            max: 'The userName field may not be greater than 100 characters'
+            max: 'The User Name field may not be greater than 100 characters'
           },
           password: {
             required: () => 'Password can not be empty',
             max: 'The Password field may not be greater than 100 characters'
           },
           customerType: {
-            required: () => 'Ypu must select a customer typr.'
+            required: () => 'You must select a Customer Type.'
           }
-           
-        
-        
+            
         },
       },
 

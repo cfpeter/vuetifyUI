@@ -102,20 +102,20 @@ import {mapActions} from 'vuex';
         const isValid = await this.$validator.validateAll()
 
         if(isValid){ 
-          
-          const data ={
-            userName: this.userName,
-            password: this.password
-          }
+
+            const data ={
+              userName: this.userName,
+              password: this.password
+            }
   
-          this.login(data)
-            .then( () => { 
-             this.$router.push('dashboard')
-            })
-            .catch(err => {
-              this.errorShow = true;
-              this.errorMessage = err.response.data
-            })
+            this.login(data)
+              .then( () => { 
+                  this.$router.push('dashboard')
+              })
+              .catch(err => {
+                  this.errorShow = true;
+                  this.errorMessage = err.response.data
+              })
         } 
       }
      

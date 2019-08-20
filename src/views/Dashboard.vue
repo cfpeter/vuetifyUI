@@ -1,7 +1,7 @@
 <template>
     <v-content >  
       <v-container>
-        <h2>THis is your dashboard {{userTokenInfo.fullName}}</h2> 
+        <h2>THis is your dashboard {{personData.firstName  }} {{personData.lastName}} </h2> 
       </v-container>
     </v-content>
 </template>
@@ -15,12 +15,20 @@ export default {
     components:{
         SideNav
     }, 
-    created(){
-        if(!this.userTokenInfo.customerID)
-            this.getUserByCustomerID(this.userTokenInfo.customerID);
+    created(){ 
+        if(this.$store.getters.getPersonData)
+            return this.$store.getters.getPersonData 
     },
     computed: {
-        ...mapGetters(['userTokenInfo']), 
+
+        personData(){
+          if(this.$store.getters.getPersonData)
+            return this.$store.getters.getPersonData 
+          
+          return '';
+        },
+
+         
     },
     methods: { 
         ...mapActions(['getUserByCustomerID'])

@@ -11,13 +11,13 @@ const apiClient = axios.create({
 })
 
 export default {
-    register(regData){ 
-        return apiClient.post('/register', regData)
+    async register(regData){ 
+        return await apiClient.post('/register', regData)
     },
-    login(loginData){ 
-        return apiClient.post('/login', loginData)
+    async login(loginData){ 
+        return await apiClient.post('/login', loginData)
     },
-    logout(){ 
-        return apiClient.post('/logout')
+    async logout(){ 
+        return await apiClient.post('/logout')
     }
 }
